@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public class Strategy {
 
     public Bet decide(final Table table) {
-        Bet bet = new Bet();
+        Bet bet = new Bet().bet(0);
 
         Player own = table.getPlayers().get(table.getActivePlayer());
 
@@ -36,20 +36,31 @@ public class Strategy {
                 });
 
         List<String> ownRank = ourCards.stream().map(card -> card.getRank().getValue()).collect(Collectors.toList());
-        bet.bet(0);
+
+        boolean hasGoodCard = false;
+        boolean hasAllInCard = false;
 
         if (isaBoolean(rankCount, 4, ownRank)) {
-            bet.bet(table.getMinimumRaise());
+            hasGoodCard = true;
+            hasAllInCard = true;
         } else if (isaBoolean(rankCount, 3, ownRank) && isaBoolean(rankCount, 2, ownRank)) {
-            bet.bet(table.getMinimumRaise());
+            hasGoodCard = true;
+            hasAllInCard = true;
         } else if (isaBoolean(rankCount, 3, ownRank)) {
-            bet.bet(table.getMinimumRaise());
+            hasGoodCard = true;
         } else if (isaBoolean(rankCount, 2, ownRank)) {
-            bet.bet(table.getMinimumRaise());
-        } else {
-            bet.bet(0);
+            hasGoodCard = true;
         }
-        
+
+        if (hasGoodCard && table.getRound() <= 2) {
+            bet.bet(table.getMinimumRaise());
+        } else if (hasGoodCard) {
+            bet.bet(table.getMinimumBet());
+        }
+        if (hasAllInCard) {
+            bet.bet(table.getMinimumRaise());
+        }
+
         return bet;
     }
 
