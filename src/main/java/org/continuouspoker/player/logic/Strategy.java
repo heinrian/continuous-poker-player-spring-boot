@@ -36,19 +36,24 @@ public class Strategy {
                 });
 
         List<String> ownRank = ourCards.stream().map(card -> card.getRank().getValue()).collect(Collectors.toList());
+        bet.bet(table.getMinimumBet());
+
 
         if (isaBoolean(rankCount, 4, ownRank)) {
-            bet.bet(own.getStack());
+            bet.bet(table.getMinimumRaise());
         } else if (isaBoolean(rankCount, 3, ownRank) && isaBoolean(rankCount, 2, ownRank)) {
-            bet.bet(own.getStack());
+            bet.bet(table.getMinimumRaise());
         } else if (isaBoolean(rankCount, 3, ownRank)) {
-            bet.bet(own.getStack() / 2);
+            bet.bet(table.getMinimumRaise());
         } else if (isaBoolean(rankCount, 2, ownRank)) {
             bet.bet(table.getMinimumRaise());
         } else {
             bet.bet(0);
         }
 
+        if (bet.getBet() < table.getMinimumBet()) {
+            bet.bet(table.getMinimumBet());
+        }
 
         return bet;
     }
