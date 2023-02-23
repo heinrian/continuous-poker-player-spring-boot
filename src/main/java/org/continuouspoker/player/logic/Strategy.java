@@ -37,21 +37,26 @@ public class Strategy {
 
         List<String> ownRank = ourCards.stream().map(card -> card.getRank().getValue()).collect(Collectors.toList());
 
-        if (rankCount.containsValue(4) &&
-                keys(rankCount, 4).collect(Collectors.toList()).contains(ownRank.get(0)) ||
-                keys(rankCount, 4).collect(Collectors.toList()).contains(ownRank.get(1))
-        ) {
+        if (isaBoolean(rankCount, 4, ownRank)) {
             bet.bet(own.getStack());
-        } else if (rankCount.containsValue(2) &&
-                keys(rankCount, 2).collect(Collectors.toList()).contains(ownRank.get(0)) ||
-                keys(rankCount, 2).collect(Collectors.toList()).contains(ownRank.get(1))) {
+        } else if (isaBoolean(rankCount, 3, ownRank) && isaBoolean(rankCount, 2, ownRank)) {
+            bet.bet(own.getStack());
+        } else if (isaBoolean(rankCount, 3, ownRank)) {
             bet.bet(own.getStack() / 2);
+        } else if (isaBoolean(rankCount, 2, ownRank)) {
+            bet.bet(own.getStack() / 4);
         } else {
             bet.bet(0);
         }
 
 
         return bet;
+    }
+
+    private boolean isaBoolean(Map<String, Integer> rankCount, int value, List<String> ownRank) {
+        return rankCount.containsValue(value) &&
+                keys(rankCount, value).collect(Collectors.toList()).contains(ownRank.get(0)) ||
+                keys(rankCount, value).collect(Collectors.toList()).contains(ownRank.get(1));
     }
 
 
