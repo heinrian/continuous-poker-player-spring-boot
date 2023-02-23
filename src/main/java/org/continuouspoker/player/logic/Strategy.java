@@ -44,7 +44,7 @@ public class Strategy {
         } else if (isaBoolean(rankCount, 3, ownRank)) {
             bet.bet(own.getStack() / 2);
         } else if (isaBoolean(rankCount, 2, ownRank)) {
-            bet.bet(own.getStack() / 4);
+            bet.bet(table.getMinimumRaise());
         } else {
             bet.bet(0);
         }
