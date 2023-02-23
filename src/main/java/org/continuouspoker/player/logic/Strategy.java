@@ -52,7 +52,9 @@ public class Strategy {
             hasGoodCard = true;
         }
 
-        if (hasGoodCard && table.getRound() <= 2) {
+        if (table.getRound() <= 3) bet.bet(table.getMinimumBet());
+
+        if (hasGoodCard && table.getRound() <= 4) {
             bet.bet(table.getMinimumRaise());
         } else if (hasGoodCard) {
             bet.bet(table.getMinimumBet());
